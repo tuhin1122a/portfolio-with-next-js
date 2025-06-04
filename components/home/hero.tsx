@@ -1,21 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import type { IHeader, IHero } from "@/lib/models/header";
+import { motion } from "framer-motion";
 import {
   ArrowDown,
+  Facebook,
   Github,
   Linkedin,
-  Facebook,
+  Mail,
   MessageCircle,
   Phone,
-  Mail,
 } from "lucide-react";
-import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
-import Particles from "../ui/Particles";
+import Link from "next/link";
 import TypingAnimation from "../TypingAnimation";
-import type { IHeader, IHero } from "@/lib/models/header";
+import Particles from "../ui/Particles";
 
 interface HeroProps {
   header?: Partial<IHeader>;
@@ -79,7 +79,7 @@ export default function Hero({ header }: HeroProps) {
         />
       </div>
       {/* Background Image */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.5 }}
         transition={{ duration: 1.2, ease: "easeInOut" }}
@@ -93,7 +93,7 @@ export default function Hero({ header }: HeroProps) {
           className="object-cover"
           sizes="100vw"
         />
-      </motion.div>
+      </motion.div> */}
 
       <div className="max-w-6xl w-full mx-auto px-4 md:px-8 z-10">
         <div className="flex flex-col gap-8 md:gap-12 items-center text-center">
