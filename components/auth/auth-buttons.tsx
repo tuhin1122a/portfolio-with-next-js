@@ -48,11 +48,11 @@ export function SignInButton() {
           <DropdownMenuSeparator />
           {session.user?.isAdmin && (
             <DropdownMenuItem asChild>
-              <Link href="/admin">Dashboard</Link>
+              <Link href="/dashboard">Dashboard</Link>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem asChild>
-            <Link href="/profile">Profile</Link>
+            <Link href="/dashboard/profile">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
