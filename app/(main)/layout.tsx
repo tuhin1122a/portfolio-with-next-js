@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import ChatButton from "@/components/chat/chat-button";
 import { getHeader, initializeDefaultHeader } from "@/lib/server/header";
 import { getFooter, initializeDefaultFooter } from "@/lib/server/footer";

@@ -11,7 +11,7 @@ import { getAboutData } from "@/lib/server/about";
 import { getFooter, initializeDefaultFooter } from "@/lib/server/footer";
 import { getHeader, initializeDefaultHeader } from "@/lib/server/header";
 import { serializeData } from "@/lib/utils";
-import GlowBackground from "./../components/GlowBackground";
+import GlowBackground from "@/components/GlowBackground";
 
 export default async function Home() {
   await initializeDefaultHeader();
