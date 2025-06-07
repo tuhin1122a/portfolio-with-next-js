@@ -228,7 +228,7 @@ export default function AdminAbout() {
   }
 
   return (
-    <Card>
+    <Card className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
       <CardHeader>
         <CardTitle>About Section</CardTitle>
         <CardDescription>
@@ -238,11 +238,31 @@ export default function AdminAbout() {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           <Tabs defaultValue="basic">
-            <TabsList className="mb-4">
-              <TabsTrigger value="basic">Basic Info</TabsTrigger>
-              <TabsTrigger value="education">Education</TabsTrigger>
-              <TabsTrigger value="skills">Skills & Interests</TabsTrigger>
-              <TabsTrigger value="languages">Languages</TabsTrigger>
+            <TabsList className="mb-4 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
+              <TabsTrigger
+                value="basic"
+                className="data-[state=active]:bg-blue-800 data-[state=active]:text-white"
+              >
+                Basic Info
+              </TabsTrigger>
+              <TabsTrigger
+                value="education"
+                className="data-[state=active]:bg-blue-800 data-[state=active]:text-white"
+              >
+                Education
+              </TabsTrigger>
+              <TabsTrigger
+                value="skills"
+                className="data-[state=active]:bg-blue-800 data-[state=active]:text-white"
+              >
+                Skills & Interests
+              </TabsTrigger>
+              <TabsTrigger
+                value="languages"
+                className="data-[state=active]:bg-blue-800 data-[state=active]:text-white"
+              >
+                Languages
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="basic" className="space-y-4">
@@ -250,6 +270,7 @@ export default function AdminAbout() {
                 <div className="space-y-2">
                   <Label htmlFor="fullName">Full Name</Label>
                   <Input
+                    className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     id="fullName"
                     value={about.fullName}
                     onChange={handleChange}
@@ -261,6 +282,7 @@ export default function AdminAbout() {
                   <Input
                     id="email"
                     type="email"
+                    className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     value={about.email}
                     onChange={handleChange}
                   />
@@ -270,7 +292,7 @@ export default function AdminAbout() {
                   <Label htmlFor="bio">Bio</Label>
                   <Textarea
                     id="bio"
-                    className="min-h-[80px]"
+                    className="min-h-[80px] bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     value={about.bio}
                     onChange={handleChange}
                   />
@@ -279,7 +301,7 @@ export default function AdminAbout() {
                   <Label htmlFor="bio">Bio Extended</Label>
                   <Textarea
                     id="bioExtended"
-                    className="min-h-[100px]"
+                    className="min-h-[100px] bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     value={about.bioExtended}
                     onChange={handleChange}
                   />
@@ -288,7 +310,7 @@ export default function AdminAbout() {
                   <Label htmlFor="bio">Bio Conclusion</Label>
                   <Textarea
                     id="bioConclusion"
-                    className="min-h-[100px]"
+                    className="min-h-[100px] bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700 "
                     value={about.bioConclusion}
                     onChange={handleChange}
                   />
@@ -297,6 +319,7 @@ export default function AdminAbout() {
                 <div className="space-y-2">
                   <Label htmlFor="location">Location</Label>
                   <Input
+                    className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     id="location"
                     value={about.location}
                     onChange={handleChange}
@@ -307,7 +330,7 @@ export default function AdminAbout() {
                   <Label htmlFor="availability">Availability</Label>
                   <select
                     id="availability"
-                    className="w-full p-2 rounded-md border border-input"
+                    className="w-full p-2 rounded-md border border-input bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     value={about.availability}
                     onChange={handleChange}
                   >
@@ -321,6 +344,7 @@ export default function AdminAbout() {
                 <div className="space-y-2">
                   <Label htmlFor="resumeUrl">Resume URL</Label>
                   <Input
+                    className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     id="resumeUrl"
                     value={about.resumeUrl}
                     onChange={handleChange}
@@ -336,7 +360,7 @@ export default function AdminAbout() {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute top-2 right-2"
+                    className="absolute top-2 right-2 bg-blue-600 hover:bg-blue-800"
                     onClick={() => removeEducation(index)}
                   >
                     <Trash className="h-4 w-4" />
@@ -346,6 +370,7 @@ export default function AdminAbout() {
                     <div className="space-y-2">
                       <Label htmlFor={`degree-${index}`}>Degree</Label>
                       <Input
+                        className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                         id={`degree-${index}`}
                         value={edu.degree}
                         onChange={(e) =>
@@ -359,6 +384,7 @@ export default function AdminAbout() {
                         Institution
                       </Label>
                       <Input
+                        className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                         id={`institution-${index}`}
                         value={edu.institution}
                         onChange={(e) =>
@@ -370,6 +396,7 @@ export default function AdminAbout() {
                     <div className="space-y-2">
                       <Label htmlFor={`year-${index}`}>Year</Label>
                       <Input
+                        className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                         id={`year-${index}`}
                         value={edu.year}
                         onChange={(e) =>
@@ -383,6 +410,7 @@ export default function AdminAbout() {
                         Description
                       </Label>
                       <Textarea
+                        className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                         id={`description-${index}`}
                         value={edu.description}
                         onChange={(e) =>
@@ -394,7 +422,12 @@ export default function AdminAbout() {
                 </div>
               ))}
 
-              <Button type="button" variant="outline" onClick={addEducation}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={addEducation}
+                className="bg-blue-600 hover:bg-blue-800"
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Education
               </Button>
@@ -424,6 +457,7 @@ export default function AdminAbout() {
                 </div>
                 <div className="flex gap-2">
                   <Input
+                    className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     placeholder="Add a skill"
                     value={newSkill}
                     onChange={(e) => setNewSkill(e.target.value)}
@@ -431,7 +465,11 @@ export default function AdminAbout() {
                       e.key === "Enter" && (e.preventDefault(), addSkill())
                     }
                   />
-                  <Button type="button" onClick={addSkill}>
+                  <Button
+                    type="button"
+                    onClick={addSkill}
+                    className="bg-blue-600 hover:bg-blue-800"
+                  >
                     Add
                   </Button>
                 </div>
@@ -460,6 +498,7 @@ export default function AdminAbout() {
                 </div>
                 <div className="flex gap-2">
                   <Input
+                    className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     placeholder="Add an interest"
                     value={newInterest}
                     onChange={(e) => setNewInterest(e.target.value)}
@@ -467,7 +506,11 @@ export default function AdminAbout() {
                       e.key === "Enter" && (e.preventDefault(), addInterest())
                     }
                   />
-                  <Button type="button" onClick={addInterest}>
+                  <Button
+                    type="button"
+                    onClick={addInterest}
+                    className="bg-blue-600 hover:bg-blue-800"
+                  >
                     Add
                   </Button>
                 </div>
@@ -493,6 +536,7 @@ export default function AdminAbout() {
                         type="button"
                         variant="ghost"
                         size="icon"
+                        className="bg-blue-600 hover:bg-blue-800"
                         onClick={() => removeLanguage(index)}
                       >
                         <X className="h-4 w-4" />
@@ -504,6 +548,7 @@ export default function AdminAbout() {
                 <div className="grid grid-cols-3 gap-2">
                   <div className="col-span-2">
                     <Input
+                      className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                       placeholder="Language name"
                       value={newLanguage.name}
                       onChange={(e) =>
@@ -512,7 +557,7 @@ export default function AdminAbout() {
                     />
                   </div>
                   <select
-                    className="p-2 rounded-md border border-input"
+                    className="p-2 rounded-md border border-input bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                     value={newLanguage.proficiency}
                     onChange={(e) =>
                       setNewLanguage({
@@ -528,14 +573,22 @@ export default function AdminAbout() {
                     <option value="Native">Native</option>
                   </select>
                 </div>
-                <Button type="button" onClick={addLanguage}>
+                <Button
+                  type="button"
+                  onClick={addLanguage}
+                  className="bg-blue-600 hover:bg-blue-800"
+                >
                   Add Language
                 </Button>
               </div>
             </TabsContent>
           </Tabs>
 
-          <Button type="submit" disabled={saving}>
+          <Button
+            type="submit"
+            disabled={saving}
+            className="bg-blue-600 hover:bg-blue-800"
+          >
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save Changes
           </Button>

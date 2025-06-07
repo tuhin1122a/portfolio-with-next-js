@@ -1,14 +1,6 @@
 "use client";
 
-import type React from "react";
-import Image from "next/image"; // Add this import
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
@@ -16,9 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PlusCircle, Trash2, Save, Upload } from "lucide-react";
-import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import type { IHeader, INavItem } from "@/lib/models/header";
+import { PlusCircle, Save, Trash2, Upload } from "lucide-react";
+import Image from "next/image"; // Add this import
+import type React from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function AdminHeader() {
   const [loading, setLoading] = useState(false);
@@ -264,7 +264,9 @@ export default function AdminHeader() {
       toast.success("Header updated successfully");
     } catch (error) {
       console.error("Error updating header:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to update header");
+      toast.error(
+        error instanceof Error ? error.message : "Failed to update header"
+      );
     } finally {
       setLoading(false);
     }
@@ -273,16 +275,36 @@ export default function AdminHeader() {
   return (
     <form onSubmit={handleSubmit}>
       <Tabs defaultValue="general" className="w-full">
-        <TabsList className="grid grid-cols-4 mb-4">
-          <TabsTrigger value="general">General</TabsTrigger>
-          <TabsTrigger value="navigation">Navigation</TabsTrigger>
-          <TabsTrigger value="hero">Hero</TabsTrigger>
-          <TabsTrigger value="social">Social Links</TabsTrigger>
+        <TabsList className="grid grid-cols-4 mb-4 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
+          <TabsTrigger
+            value="general"
+            className="data-[state=active]:bg-blue-800 data-[state=active]:text-white"
+          >
+            General
+          </TabsTrigger>
+          <TabsTrigger
+            value="navigation"
+            className="data-[state=active]:bg-blue-800 data-[state=active]:text-white"
+          >
+            Navigation
+          </TabsTrigger>
+          <TabsTrigger
+            value="hero"
+            className="data-[state=active]:bg-blue-800 data-[state=active]:text-white"
+          >
+            Hero
+          </TabsTrigger>
+          <TabsTrigger
+            value="social"
+            className="data-[state=active]:bg-blue-800 data-[state=active]:text-white"
+          >
+            Social Links
+          </TabsTrigger>
         </TabsList>
 
         {/* General */}
         <TabsContent value="general">
-          <Card>
+          <Card className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
             <CardHeader>
               <CardTitle>General Settings</CardTitle>
               <CardDescription>
@@ -293,6 +315,7 @@ export default function AdminHeader() {
               <div className="space-y-2">
                 <Label htmlFor="logoText">Logo Text</Label>
                 <Input
+                  className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-800 dark:focus-visible:ring-blue-700"
                   id="logoText"
                   value={header.logoText || ""}
                   onChange={(e) =>
@@ -307,7 +330,7 @@ export default function AdminHeader() {
 
         {/* Navigation */}
         <TabsContent value="navigation">
-          <Card>
+          <Card className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
             <CardHeader>
               <CardTitle>Navigation Items</CardTitle>
               <CardDescription>Manage navigation menu items</CardDescription>
@@ -406,7 +429,7 @@ export default function AdminHeader() {
 
         {/* Hero */}
         <TabsContent value="hero">
-          <Card>
+          <Card className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
             <CardHeader>
               <CardTitle>Hero Section</CardTitle>
               <CardDescription>Configure hero section content</CardDescription>
@@ -637,7 +660,7 @@ export default function AdminHeader() {
 
         {/* Social Links */}
         <TabsContent value="social">
-          <Card>
+          <Card className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950">
             <CardHeader>
               <CardTitle>Social Links</CardTitle>
               <CardDescription>Manage social media links</CardDescription>
@@ -709,7 +732,11 @@ export default function AdminHeader() {
       </Tabs>
 
       <div className="mt-6 flex justify-end">
-        <Button type="submit" disabled={loading}>
+        <Button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-800"
+        >
           {loading ? (
             "Saving..."
           ) : (

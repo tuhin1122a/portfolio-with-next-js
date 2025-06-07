@@ -35,7 +35,7 @@ export default function About({ about }: AboutProps) {
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">
                   {about?.bio ||
-                    "Hello! I'm Masudur Rahman, a passionate full-stack web developer specializing in creating beautiful, functional, and user-friendly web applications. With over 5 years of experience in the field, I've worked on a diverse range of projects, from small business websites to complex enterprise applications."}
+                    "Hello! I'm Tuhinur Rahman, a passionate full-stack web developer specializing in creating beautiful, functional, and user-friendly web applications. With over 2 years of experience in the field, I've worked on a diverse range of projects, from small business websites to complex enterprise applications."}
                 </p>
                 <p className="text-muted-foreground mt-4">
                   {about?.bioExtended ||
@@ -90,19 +90,19 @@ export default function About({ about }: AboutProps) {
                   <div className="space-y-1">
                     <h3 className="font-medium">Name:</h3>
                     <p className="text-muted-foreground">
-                      {about?.fullName || "Masudur Rahman"}
+                      {about?.fullName || "Tuhinur Rahman"}
                     </p>
                   </div>
                   <div className="space-y-1">
                     <h3 className="font-medium">Email:</h3>
                     <p className="text-muted-foreground">
-                      {about?.email || "contact@masudurrahman.com"}
+                      {about?.email || "tuhinrahman48@gmail.com"}
                     </p>
                   </div>
                   <div className="space-y-1">
                     <h3 className="font-medium">Location:</h3>
                     <p className="text-muted-foreground">
-                      {about?.location || "Dhaka, Bangladesh"}
+                      {about?.location || "Jhenaidah, Bangladesh"}
                     </p>
                   </div>
                   <div className="space-y-1">
