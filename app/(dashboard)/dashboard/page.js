@@ -140,7 +140,7 @@ export default function AdminDashboardHome() {
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Bar Chart */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-md p-5">
+        <div className="bg-white dark:bg-red-800 rounded-2xl shadow-md p-5">
           <h2 className="text-lg font-semibold mb-4 dark:text-white">
             Overview (Bar Chart)
           </h2>
@@ -163,7 +163,7 @@ export default function AdminDashboardHome() {
         </div>
 
         {/* Pie Chart */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-md p-5">
+        <div className="bg-white dark:bg-red-500 rounded-2xl shadow-md p-5">
           <h2 className="text-lg font-semibold mb-4 dark:text-white">
             Distribution (Pie Chart)
           </h2>

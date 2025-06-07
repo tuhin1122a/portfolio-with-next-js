@@ -28,7 +28,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-950`}
       >
         <AuthProvider>
           <ThemeProvider
@@ -41,7 +41,7 @@ export default async function RootLayout({ children }) {
               <AppSidebar />
               <main className="w-full">
                 <Navbar />
-                <div className="px-4">{children}</div>
+                <div className="px-4 ">{children}</div>
               </main>
             </SidebarProvider>
           </ThemeProvider>
