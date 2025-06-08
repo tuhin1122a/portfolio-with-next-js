@@ -1,6 +1,10 @@
 import { Conversation } from "@/app/(dashboard)/components/conversations";
 import { IFooter } from "@/app/(dashboard)/components/footer";
 import { IHeader } from "@/app/(dashboard)/components/header";
+import {
+  Project,
+  ProjectFormData,
+} from "@/app/(dashboard)/components/projects";
 
 const API_BASE_URL = "/api/chat/conversations";
 
@@ -103,4 +107,91 @@ export const uploadProfileImage = async (
     throw new Error("Image upload failed");
   }
   return response.json();
+};
+
+// src/features/admin/projects/utils/api.ts
+
+// Helper to handle API responses
+async function handleResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "An API error occurred");
+  }
+  return response.json();
+}
+
+// Transform form data to the required project structure for the API
+const transformFormData = (formData: ProjectFormData) => {
+  const tagsArray = formData.tags.split(",").map((tag) => tag.trim());
+  const featuresArray = formData.features
+    .split("\n")
+    .filter((feature) => feature.trim() !== "");
+
+  return {
+    ...formData,
+    tags: tagsArray,
+    features: featuresArray,
+  };
+};
+
+export const getProjects = (): Promise<Project[]> => {
+  return fetch("/api/projects").then(handleResponse<Project[]>);
+};
+
+export const createProject = (
+  projectData: ProjectFormData
+): Promise<Project> => {
+  const transformedData = transformFormData(projectData);
+  return fetch(`${API_BASE_URL}/projects`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(transformedData),
+  }).then(handleResponse<Project>);
+};
+
+export const updateProject = (
+  id: string,
+  projectData: ProjectFormData
+): Promise<Project> => {
+  const transformedData = transformFormData(projectData);
+  return fetch(`${API_BASE_URL}/projects/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(transformedData),
+  }).then(handleResponse<Project>);
+};
+
+export const deleteProject = (id: string): Promise<{ message: string }> => {
+  return fetch(`${API_BASE_URL}/projects/${id}`, {
+    method: "DELETE",
+  }).then(handleResponse<{ message: string }>);
+};
+
+export const uploadFile = async (
+  file: File,
+  onUploadProgress: (progress: number) => void
+): Promise<{ filePath: string }> => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  // Simulate progress for a better user experience
+  const progressInterval = setInterval(() => {
+    onUploadProgress(Math.floor(Math.random() * 10) + 85); // Simulate 85-95% progress
+  }, 500);
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/upload/project-image`, {
+      method: "POST",
+      body: formData,
+    });
+
+    clearInterval(progressInterval);
+    onUploadProgress(100);
+
+    return handleResponse<{ filePath: string }>(response);
+  } catch (error) {
+    clearInterval(progressInterval);
+    onUploadProgress(0); // Reset on error
+    throw error;
+  }
 };
