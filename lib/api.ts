@@ -1,5 +1,6 @@
 import { Conversation } from "@/app/(dashboard)/components/conversations";
 import { IFooter } from "@/app/(dashboard)/components/footer";
+import { IHeader } from "@/app/(dashboard)/components/header";
 
 const API_BASE_URL = "/api/chat/conversations";
 
@@ -65,4 +66,41 @@ export const updateFooter = async (
   }
 
   return responseData;
+};
+
+export const getHeader = async (): Promise<IHeader | null> => {
+  const response = await fetch("/api/header");
+  if (!response.ok) {
+    console.error("Failed to fetch header data");
+    return null;
+  }
+  return response.json();
+};
+
+export const updateHeader = async (
+  headerData: Partial<IHeader>
+): Promise<IHeader> => {
+  const response = await fetch("/api/header", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(headerData),
+  });
+  const responseData = await response.json();
+  if (!response.ok) {
+    throw new Error(responseData.message || "Failed to update header");
+  }
+  return responseData;
+};
+
+export const uploadProfileImage = async (
+  formData: FormData
+): Promise<{ url: string }> => {
+  const response = await fetch("/api/upload/profile-image", {
+    method: "POST",
+    body: formData,
+  });
+  if (!response.ok) {
+    throw new Error("Image upload failed");
+  }
+  return response.json();
 };
