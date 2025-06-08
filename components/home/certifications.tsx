@@ -1,9 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { Award, Calendar, X, ChevronLeft, ChevronRight } from "lucide-react";
-import SectionHeading from "@/components/ui/section-heading";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,10 +8,13 @@ import {
   DialogPortal,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import useEmblaCarousel from "embla-carousel-react";
+import SectionHeading from "@/components/ui/section-heading";
 import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
+import { Award, Calendar, ChevronLeft, ChevronRight, X } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface Certification {
   _id: string;

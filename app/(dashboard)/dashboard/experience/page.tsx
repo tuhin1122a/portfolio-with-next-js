@@ -1,19 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import type { IExperience } from "@/lib/models/experience";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useExperiences } from "@/hooks/useExperiences";
-import { ExperiencesTable } from "../../components/experiences/ExperiencesTable";
+import type { IExperience } from "@/lib/models/experience";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { ExperienceFormDialog } from "../../components/experiences/ExperienceFormDialog";
-
+import { ExperiencesTable } from "../../components/experiences/ExperiencesTable";
 
 export default function AdminExperiencesPage() {
-  const { experiences, loading, isSubmitting, submitExperience, deleteExperience, reorderExperience } = useExperiences();
+  const {
+    experiences,
+    loading,
+    isSubmitting,
+    submitExperience,
+    deleteExperience,
+    reorderExperience,
+  } = useExperiences();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingExperience, setEditingExperience] = useState<IExperience | null>(null);
+  const [editingExperience, setEditingExperience] =
+    useState<IExperience | null>(null);
 
   const handleAddNew = () => {
     setEditingExperience(null);
@@ -26,35 +39,40 @@ export default function AdminExperiencesPage() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>Work Experience</CardTitle>
-            <CardDescription>Manage your professional experience</CardDescription>
+    <>
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Work Experience</CardTitle>
+              <CardDescription>
+                Manage your professional experience
+              </CardDescription>
+            </div>
+            <Button className="gap-1" onClick={handleAddNew}>
+              <Plus className="h-4 w-4" /> Add Experience
+            </Button>
           </div>
-          <Button className="gap-1" onClick={handleAddNew}>
-            <Plus className="h-4 w-4" /> Add Experience
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <ExperiencesTable
-          experiences={experiences}
-          loading={loading}
-          onEdit={handleEdit}
-          onDelete={deleteExperience}
-          onMove={reorderExperience}
-        />
-      </CardContent>
+        </CardHeader>
 
-      <ExperienceFormDialog
-        isOpen={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        onSubmit={submitExperience}
-        isSubmitting={isSubmitting}
-        editingExperience={editingExperience}
-      />
-    </Card>
+        <CardContent>
+          <ExperiencesTable
+            experiences={experiences}
+            loading={loading}
+            onEdit={handleEdit}
+            onDelete={deleteExperience}
+            onMove={reorderExperience}
+          />
+        </CardContent>
+
+        <ExperienceFormDialog
+          isOpen={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          onSubmit={submitExperience}
+          isSubmitting={isSubmitting}
+          editingExperience={editingExperience}
+        />
+      </Card>
+    </>
   );
 }

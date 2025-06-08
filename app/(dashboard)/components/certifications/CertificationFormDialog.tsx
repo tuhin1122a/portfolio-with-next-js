@@ -1,4 +1,3 @@
-// src/app/admin/certifications/components/CertificationFormDialog.tsx
 "use client";
 
 import Image from "next/image";
@@ -108,10 +107,10 @@ export default function CertificationFormDialog({
             {isEditing ? "Update the details." : "Fill in the details to add."}
           </DialogDescription>
         </DialogHeader>
+
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-          {/* Form fields from your original code */}
           <div className="grid gap-4">
-            {/* Title, Organization, Issue Date, Description fields */}
+            {/* Title */}
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
               <Input
@@ -122,7 +121,47 @@ export default function CertificationFormDialog({
                 required
               />
             </div>
-            {/* ... other fields ... */}
+
+            {/* Organization */}
+            <div className="space-y-2">
+              <Label htmlFor="organization">Issuing Organization</Label>
+              <Input
+                id="organization"
+                name="organization"
+                value={formData.organization}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Issue Date */}
+            <div className="space-y-2">
+              <Label htmlFor="issueDate">Issue Date</Label>
+              <Input
+                id="issueDate"
+                name="issueDate"
+                type="date"
+                value={formData.issueDate}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Description */}
+            <div className="space-y-2">
+              <Label htmlFor="description">Description</Label>
+              <textarea
+                id="description"
+                name="description"
+                className="w-full rounded-md border px-3 py-2 text-sm"
+                rows={4}
+                value={formData.description}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Certificate Image */}
             <div className="space-y-2">
               <Label htmlFor="image">Certificate Image</Label>
               <Input
@@ -144,6 +183,7 @@ export default function CertificationFormDialog({
               )}
             </div>
           </div>
+
           <DialogFooter>
             <Button
               type="button"

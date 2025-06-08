@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import SectionHeading from "../ui/section-heading";
 import type { IExperience } from "@/lib/models/experience";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import SectionHeading from "../ui/section-heading";
 
 export default function Experience() {
   const [experiences, setExperiences] = useState<IExperience[]>([]);
@@ -83,11 +83,11 @@ export default function Experience() {
 
   return (
     <section id="experience" className="py-16 md:py-24 relative">
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 text-center">
         <SectionHeading
           title="Work Experience"
           subtitle="My professional journey and roles"
-          align="left"
+          align="center"
         />
 
         <div className="mt-16">

@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { IAbout } from "@/lib/models/about";
+import { motion } from "framer-motion";
 import { FileText } from "lucide-react";
 import Link from "next/link";
 import SectionHeading from "../ui/section-heading";
-import type { IAbout } from "@/lib/models/about";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 interface AboutProps {
   about?: Partial<IAbout>;
@@ -19,7 +19,7 @@ export default function About({ about }: AboutProps) {
         <SectionHeading
           title="About Me"
           subtitle="Learn a little more about my background and experience"
-          align="left"
+          align="center"
         />
 
         <div className="grid md:grid-cols-2 gap-10 mt-12">
