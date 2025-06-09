@@ -26,7 +26,7 @@ export default function AdminHeaderPage() {
   return (
     <form onSubmit={handleSubmit}>
       <Tabs defaultValue="hero" className="w-full">
-        <TabsList className="grid grid-cols-4 mb-4">
+        <TabsList className="grid grid-cols-4 mb-4 bg-white dark:bg-[#0e1a2c]">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="navigation">Navigation</TabsTrigger>
           <TabsTrigger value="hero">Hero</TabsTrigger>

@@ -122,12 +122,12 @@ export default function AppSidebar() {
                       <Link
                         href={item.url}
                         className={`flex items-center px-3 py-2 rounded-md transition-all text-sm font-medium
-                          ${
-                            active
-                              ? "bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-white"
-                              : "hover:bg-gray-100 hover:dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                          }
-                        `}
+    ${
+      active
+        ? "bg-[#03829c] text-white dark:bg-[#03829c] dark:text-white hover:bg-[#02677b] dark:hover:bg-[#014f5d]"
+        : "hover:bg-gray-100 hover:dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+    }
+  `}
                       >
                         <item.icon className="mr-2 h-4 w-4" />
                         {item.title}

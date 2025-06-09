@@ -1,15 +1,15 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import type { INavItem } from "@/lib/models/header";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { MenuIcon, MoonIcon, SunIcon, XIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 import { SignInButton } from "./auth/auth-buttons";
-import type { INavItem } from "@/lib/models/header";
 
 interface NavbarProps {
   navItems?: INavItem[];
