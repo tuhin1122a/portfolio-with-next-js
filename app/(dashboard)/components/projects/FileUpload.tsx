@@ -4,7 +4,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import * as api from "@/lib/api";
+import { uploadFile } from "@/lib/api";
+
 import { ImageIcon, Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -32,7 +33,7 @@ export default function FileUpload({
     setUploadProgress(0);
 
     try {
-      const data = await api.uploadFile(file, setUploadProgress);
+      const data = await uploadFile(file, setUploadProgress);
       onChange(data.filePath);
       toast.success("Image uploaded successfully.");
     } catch (error) {
