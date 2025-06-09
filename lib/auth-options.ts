@@ -1,82 +1,62 @@
-import type { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import type { Adapter } from "next-auth/adapters";
-import clientPromise, { connectToDB } from "./mongodb"; // Assuming connectToDB is handled in clientPromise
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import type { NextAuthOptions } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
 import type { JWT } from "next-auth/jwt";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import { User } from "./models/user"; // Adjust path if needed
+import clientPromise, { connectToDB } from "./mongodb";
 
-
-// Function to handle token rotation
+// Helper to refresh Google access token
 async function refreshAccessToken(token: JWT) {
   try {
-    // Skip refresh if no refresh token available
     if (!token.refreshToken) {
-      console.log("No refresh token available, skipping token refresh");
-      return {
-        ...token,
-        error: "NoRefreshTokenAvailable",
-      };
+      console.log("No refresh token available, skipping refresh");
+      return { ...token, error: "NoRefreshTokenAvailable" };
     }
 
     const response = await fetch("https://oauth2.googleapis.com/token", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
-        client_id: process.env.GOOGLE_CLIENT_ID || '',
-        client_secret: process.env.GOOGLE_CLIENT_SECRET || '',
+        client_id: process.env.GOOGLE_CLIENT_ID!,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET!,
         refresh_token: token.refreshToken as string,
         grant_type: "refresh_token",
       }).toString(),
     });
 
-    // Get the response body for better error handling
     const responseBody = await response.text();
-    
     if (!response.ok) {
       console.error("Token refresh failed:", responseBody);
-      return {
-        ...token,
-        error: `RefreshError: ${response.status}`,
-      };
+      return { ...token, error: "RefreshFailed" };
     }
 
     const refreshedTokens = JSON.parse(responseBody);
-
-    if (!refreshedTokens.access_token) {
-      console.error("No access token in refresh response:", refreshedTokens);
-      return {
-        ...token,
-        error: "NoAccessTokenInResponse",
-      };
-    }
-
     return {
       ...token,
       accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + (refreshedTokens.expires_in || 3600) * 1000,
+      accessTokenExpires:
+        Date.now() + (refreshedTokens.expires_in || 3600) * 1000,
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
     };
   } catch (error) {
     console.error("Error refreshing access token:", error);
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
+    return { ...token, error: "RefreshAccessTokenError" };
   }
 }
 
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise, {
     databaseName: "portfolio",
-  }) as any as Adapter,
+  }) as Adapter,
+
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -89,40 +69,37 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Email and password are required");
         }
 
-        try {
-          const client = await clientPromise;
-          const db = client.db("portfolio");
-          const user = await db.collection("users").findOne({ email: credentials.email });
+        const client = await clientPromise;
+        const db = client.db("portfolio");
+        const user = await db
+          .collection("users")
+          .findOne({ email: credentials.email });
 
-          if (!user || !user.password) {
-            throw new Error("Invalid credentials");
-          }
+        if (!user || !user.password) throw new Error("Invalid credentials");
 
-          const passwordMatch = await bcrypt.compare(credentials.password, user.password);
+        const isMatch = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+        if (!isMatch) throw new Error("Invalid credentials");
 
-          if (!passwordMatch) {
-            throw new Error("Invalid credentials");
-          }
-
-          return {
-            id: user._id.toString(),
-            name: user.name,
-            email: user.email,
-            image: user.image,
-            isAdmin: user.isAdmin || false,
-          };
-        } catch (error) {
-          console.error("Authorize error:", error);
-          throw new Error("Authentication failed");
-        }
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+          image: user.image,
+          isAdmin: user.isAdmin || false,
+        };
       },
     }),
   ],
+
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
+    updateAge: 24 * 60 * 60, // every 24h
   },
+
   cookies: {
     sessionToken: {
       name: "next-auth.session-token",
@@ -131,109 +108,105 @@ export const authOptions: NextAuthOptions = {
         sameSite: "lax",
         path: "/",
         secure: process.env.NODE_ENV === "production",
-       
       },
     },
   },
+
   callbacks: {
-    async signIn({ user, account, profile }) {
-      const client = await clientPromise;
-      const db = client.db("portfolio");
-
-       // Update last login and login history
-      if (user.id) {
+    async signIn({ user, account }) {
+      if (user?.id) {
         try {
-          await connectToDB()
-
-          // Get client IP and user agent (in a real app, you'd get these from the request)
-          const loginInfo = {
-            timestamp: new Date(),
-            ip: "127.0.0.1", // Placeholder
-            userAgent: "Unknown", // Placeholder
-          }
-
+          await connectToDB();
           await User.findByIdAndUpdate(user.id, {
             $set: { lastLogin: new Date() },
-            $push: { loginHistory: loginInfo },
-          })
-        } catch (error) {
-          console.error("Error updating login history:", error)
-          // Continue with sign in even if history update fails
+            $push: {
+              loginHistory: {
+                timestamp: new Date(),
+                ip: "127.0.0.1",
+                userAgent: "unknown",
+              },
+            },
+          });
+        } catch (err) {
+          console.error("Login history update failed:", err);
         }
       }
 
-      // Handle Google sign-in
+      // For Google login, link account if needed
       if (account?.provider === "google") {
-        try {
-          const existingUser = await db.collection("users").findOne({ email: user.email });
+        const client = await clientPromise;
+        const db = client.db("portfolio");
+        const existingUser = await db
+          .collection("users")
+          .findOne({ email: user.email });
 
-          if (existingUser) {
-            // Check if this Google account is already linked
-            const existingAccount = await db.collection("accounts").findOne({
+        if (existingUser) {
+          const existingAccount = await db.collection("accounts").findOne({
+            provider: "google",
+            providerAccountId: account.providerAccountId,
+          });
+
+          if (!existingAccount) {
+            await db.collection("accounts").insertOne({
               provider: "google",
               providerAccountId: account.providerAccountId,
+              access_token: account.access_token,
+              expires_at: account.expires_at,
+              refresh_token: account.refresh_token,
+              token_type: account.token_type,
+              scope: account.scope,
+              userId: existingUser._id,
             });
-
-            if (!existingAccount) {
-              // Link Google account to existing user
-              await db.collection("accounts").insertOne({
-                provider: "google",
-                providerAccountId: account.providerAccountId,
-                access_token: account.access_token,
-                expires_at: account.expires_at,
-                refresh_token: account.refresh_token,
-                token_type: account.token_type,
-                scope: account.scope,
-                userId: existingUser._id,
-              });
-            }
-            // Update user ID to match existing user
-            user.id = existingUser._id.toString();
-            user.isAdmin = existingUser.isAdmin || false;
           }
-          // If no existing user, MongoDBAdapter will create one automatically
-          return true;
-        } catch (error) {
-          console.error("SignIn error for Google:", error);
-          return false;
+
+          user.id = existingUser._id.toString();
+          user.isAdmin = existingUser.isAdmin || false;
         }
       }
 
-      // Allow Credentials sign-in to proceed
       return true;
     },
-  async jwt({ token, user, account }) {
-  // Initial sign-in
-  if (account && user) {
-    return {
-      ...token,
-      accessToken: account.access_token,
-      accessTokenExpires: account.expires_at ? account.expires_at * 1000 : Date.now() + 60 * 60 * 1000,
-      refreshToken: account.refresh_token,
-      id: user.id,
-      isAdmin: user.isAdmin || false,
-    };
-  }
 
-  // Return previous token if the access token has not expired yet
-  if (token.accessTokenExpires && Date.now() < token.accessTokenExpires) {
-    return token;
-  }
+    async jwt({ token, user, account }) {
+      if (account && user) {
+        // Google login
+        if (account.provider === "google") {
+          return {
+            ...token,
+            id: user.id,
+            isAdmin: user.isAdmin || false,
+            accessToken: account.access_token,
+            accessTokenExpires: account.expires_at
+              ? account.expires_at * 1000
+              : Date.now() + 60 * 60 * 1000,
+            refreshToken: account.refresh_token,
+          };
+        }
 
-  // If there was a previous refresh error or no refresh token, 
-  // extend the current token's lifetime rather than failing
-  if (token.error || !token.refreshToken) {
-    console.log("Skipping token refresh due to previous error or missing refresh token");
-    return {
-      ...token,
-      accessTokenExpires: Date.now() + 60 * 60 * 1000, // Extend by 1 hour
-    };
-  }
+        // Credentials login
+        if (account.provider === "credentials") {
+          return {
+            ...token,
+            id: user.id,
+            isAdmin: user.isAdmin || false,
+            accessToken: crypto.randomUUID(), // Optional: you can use JWT or leave undefined
+          };
+        }
+      }
 
-  // Refresh token has expired, try to update it
-  const refreshedToken = await refreshAccessToken(token);
-  return refreshedToken;
-},
+      // Access token still valid
+      if (token.accessTokenExpires && Date.now() < token.accessTokenExpires) {
+        return token;
+      }
+
+      // Refresh if possible
+      if (token.refreshToken) {
+        return await refreshAccessToken(token);
+      }
+
+      return token;
+    },
+
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
@@ -242,17 +215,18 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url
-      return baseUrl
+
+    redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
   },
+
   pages: {
     signIn: "/login",
     error: "/login",
   },
+
   debug: process.env.NODE_ENV === "development",
 };
