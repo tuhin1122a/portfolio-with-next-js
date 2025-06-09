@@ -3,12 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
-import { useAISettings } from "@/hooks/useAISettings";
-import { AdminAIHeader } from './../../components/ai/AdminAIHeader';
-import { GeneralSettingsCard } from './../../components/ai/GeneralSettingsCard';
-import { PersonalitySettingsCard } from './../../components/ai/PersonalitySettingsCard';
-import { ModelSettingsCard } from './../../components/ai/ModelSettingsCard';
-
+import { AdminAIHeader } from "./../../components/ai/AdminAIHeader";
+import { GeneralSettingsCard } from "./../../components/ai/GeneralSettingsCard";
+import { ModelSettingsCard } from "./../../components/ai/ModelSettingsCard";
+import { PersonalitySettingsCard } from "./../../components/ai/PersonalitySettingsCard";
 
 export default function AdminAIPage() {
   const { settings, setSettings, isLoading, isSaving, saveSettings } =

@@ -14,6 +14,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Bell, Eye, LogOut, Settings, User } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ModeToggle from "./ModeToggle";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -28,6 +29,7 @@ export default function Navbar() {
 
       {/* Right */}
       <div className="flex items-center gap-4">
+        <ModeToggle />
         {/* View Site Button */}
         <Button
           variant="outline"
