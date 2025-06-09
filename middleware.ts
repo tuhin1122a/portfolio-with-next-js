@@ -11,7 +11,8 @@ export async function middleware(request: NextRequest) {
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
     });
-
+    console.log("🔒 Middleware path:", pathname);
+    console.log("🪪 Token in middleware:", token);
     // Protect dashboard routes
     if (pathname.startsWith("/dashboard")) {
       if (!token) {
