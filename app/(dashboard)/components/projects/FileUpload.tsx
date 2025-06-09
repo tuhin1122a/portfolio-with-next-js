@@ -9,7 +9,6 @@ import { ImageIcon, Loader2, Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-
 interface FileUploadProps {
   value: string;
   onChange: (value: string) => void;

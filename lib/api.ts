@@ -162,6 +162,28 @@ export const createProject = (data: ProjectFormData): Promise<Project> => {
   }).then(handleProjectResponse);
 };
 
+// lib/api.ts
+
+export async function uploadFile(
+  file: File,
+  onProgress?: (percent: number) => void
+): Promise<{ filePath: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to upload file.");
+  }
+
+  const result = await response.json();
+  return { filePath: result.filePath };
+}
+
 export const updateProject = (
   id: string,
   data: ProjectFormData

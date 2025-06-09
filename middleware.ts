@@ -5,13 +5,14 @@ import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
+  console.log("👉 Pathname:", pathname);
+  console.log("👉 Cookies:", request.cookies.getAll());
   try {
     const token = await getToken({
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
     });
-    console.log("🔒 Middleware path:", pathname);
+
     console.log("🪪 Token in middleware:", token);
     // Protect dashboard routes
     if (pathname.startsWith("/dashboard")) {
