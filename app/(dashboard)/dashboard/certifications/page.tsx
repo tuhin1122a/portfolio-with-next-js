@@ -58,7 +58,6 @@ export default function AdminCertificationsPage() {
           throw new Error("Image path not returned from upload.");
         imagePath = uploadedPath;
       }
-      console.log(formData, imagePath);
       const certData = { ...formData, imagePath };
 
       let response;
