@@ -6,14 +6,13 @@ import type { Adapter } from "next-auth/adapters";
 import type { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { User } from "./models/user"; // Adjust path if needed
+import { User } from "./models/user";
 import clientPromise, { connectToDB } from "./mongodb";
 
-// Helper to refresh Google access token
 async function refreshAccessToken(token: JWT) {
   try {
     if (!token.refreshToken) {
-      console.log("No refresh token available, skipping refresh");
+      console.log("No refresh token available");
       return { ...token, error: "NoRefreshTokenAvailable" };
     }
 
@@ -96,13 +95,16 @@ export const authOptions: NextAuthOptions = {
 
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // every 24h
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60,
   },
 
   cookies: {
     sessionToken: {
-      name: "next-auth.session-token",
+      name:
+        process.env.NODE_ENV === "production"
+          ? "__Secure-next-auth.session-token"
+          : "next-auth.session-token",
       options: {
         httpOnly: true,
         sameSite: "lax",
@@ -132,7 +134,6 @@ export const authOptions: NextAuthOptions = {
         }
       }
 
-      // For Google login, link account if needed
       if (account?.provider === "google") {
         const client = await clientPromise;
         const db = client.db("portfolio");
@@ -169,37 +170,31 @@ export const authOptions: NextAuthOptions = {
 
     async jwt({ token, user, account }) {
       if (account && user) {
-        // Google login
         if (account.provider === "google") {
           return {
             ...token,
             id: user.id,
             isAdmin: user.isAdmin || false,
             accessToken: account.access_token,
-            accessTokenExpires: account.expires_at
-              ? account.expires_at * 1000
-              : Date.now() + 60 * 60 * 1000,
+            accessTokenExpires: account.expires_at && account.expires_at * 1000,
             refreshToken: account.refresh_token,
           };
         }
 
-        // Credentials login
         if (account.provider === "credentials") {
           return {
             ...token,
             id: user.id,
             isAdmin: user.isAdmin || false,
-            accessToken: crypto.randomUUID(), // Optional: you can use JWT or leave undefined
+            accessToken: crypto.randomUUID(),
           };
         }
       }
 
-      // Access token still valid
       if (token.accessTokenExpires && Date.now() < token.accessTokenExpires) {
         return token;
       }
 
-      // Refresh if possible
       if (token.refreshToken) {
         return await refreshAccessToken(token);
       }

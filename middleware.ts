@@ -7,15 +7,29 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   console.log("👉 Pathname:", pathname);
   console.log("👉 Cookies:", request.cookies.getAll());
+
   try {
-    const token = await getToken({
-      req: request,
-      secret: process.env.NEXTAUTH_SECRET,
-    });
+    // Try secure cookie first (for production), fallback to non-secure (for dev)
+    const token =
+      (await getToken({
+        req: request,
+        secret: process.env.NEXTAUTH_SECRET,
+        cookieName: "__Secure-next-auth.session-token",
+      })) ||
+      (await getToken({
+        req: request,
+        secret: process.env.NEXTAUTH_SECRET,
+        cookieName: "next-auth.session-token",
+      }));
 
     console.log("🪪 Token in middleware:", token);
-    // Protect dashboard routes
-    if (pathname.startsWith("/dashboard")) {
+
+    // Protect routes
+    if (
+      pathname.startsWith("/dashboard") ||
+      pathname.startsWith("/admin") ||
+      pathname.startsWith("/profile")
+    ) {
       if (!token) {
         const loginUrl = new URL("/login", request.url);
         loginUrl.searchParams.set("callbackUrl", pathname);
@@ -33,5 +47,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/profile/:path*", "/admin/:path*"], // <- note the order
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/profile/:path*"],
 };
