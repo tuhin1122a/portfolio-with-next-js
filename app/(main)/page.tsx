@@ -1,6 +1,7 @@
 import GlowBackground from "@/components/GlowBackground";
 import AboutSection from "@/components/home/about/AboutSection";
-import Certifications from "@/components/home/certifications";
+import Certifications from "@/components/home/certifications/Certifications";
+
 import Contact from "@/components/home/contact";
 import Experience from "@/components/home/experience";
 import FeaturedProjects from "@/components/home/featured-projects";
