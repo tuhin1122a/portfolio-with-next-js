@@ -1,9 +1,7 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut, UserCircle } from "lucide-react";
-import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LogIn, LogOut, UserCircle } from "lucide-react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export function SignInButton() {
   const { data: session } = useSession();
@@ -52,7 +52,7 @@ export function SignInButton() {
             </DropdownMenuItem>
           )}
           <DropdownMenuItem asChild>
-            <Link href="/dashboard/profile">Profile</Link>
+            <Link href="/profile">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
