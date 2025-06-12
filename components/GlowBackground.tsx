@@ -1,16 +1,29 @@
-const glowDuration = 18; // total cycle in seconds
-const glowCount = 4; // reduced count to match remaining colors
+"use client";
+
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+
+const glowDuration = 18;
+const glowCount = 4;
 
 const colors = [
-  "rgba(255, 105, 180, 0.2)", // pink (softer)
-  "rgba(107, 94, 252, 0.2)",  // nill (purple-blue) (softer)
-  "rgba(0, 150, 255, 0.2)",   // blue (softer)
-  "rgba(170, 0, 255, 0.2)",   // purple (softer)
+  "rgba(255, 105, 180, 0.2)",
+  "rgba(107, 94, 252, 0.2)",
+  "rgba(0, 150, 255, 0.2)",
+  "rgba(170, 0, 255, 0.2)",
 ];
 
-const GlowLayer = ({ color, delay, zIndex }) => {
+const GlowLayer = ({
+  color,
+  delay,
+  zIndex,
+}: {
+  color: string;
+  delay: number;
+  zIndex: number;
+}) => {
   const style = {
-    position: "fixed",
+    position: "fixed" as const,
     top: 0,
     left: 0,
     right: 0,
@@ -32,7 +45,17 @@ const GlowLayer = ({ color, delay, zIndex }) => {
   return <div style={style} />;
 };
 
-const GlowBackground = () => {
+export default function GlowBackground() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || theme !== "dark") return null;
+
   return (
     <>
       <style>
@@ -63,6 +86,4 @@ const GlowBackground = () => {
       ))}
     </>
   );
-};
-
-export default GlowBackground;
+}
