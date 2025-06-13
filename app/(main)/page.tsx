@@ -9,7 +9,8 @@ import Hero from "@/components/home/hero";
 import LatestBlogPosts from "@/components/home/latest-blog-posts";
 import LightBackground from "@/components/home/LightBackground";
 import Services from "@/components/home/services";
-import Skills from "@/components/home/skills";
+import SkillsPage from "@/components/home/skills/Skills";
+
 import { getAboutData } from "@/lib/server/about";
 import { getFooter, initializeDefaultFooter } from "@/lib/server/footer";
 import { getHeader, initializeDefaultHeader } from "@/lib/server/header";
@@ -35,7 +36,7 @@ export default async function Home() {
 
       <Hero header={serializedHeader} />
       <AboutSection about={serializedAbout} />
-      <Skills />
+      <SkillsPage />
       <Experience />
       <Certifications />
       <FeaturedProjects />
