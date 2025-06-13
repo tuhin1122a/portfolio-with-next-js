@@ -3,7 +3,8 @@ import AboutSection from "@/components/home/about/AboutSection";
 import Certifications from "@/components/home/certifications/Certifications";
 
 import Contact from "@/components/home/contact";
-import Experience from "@/components/home/experience";
+import ExperienceSection from "@/components/home/experience/experience-section";
+import ExperienceSkeleton from "@/components/home/experience/experience-skeleton";
 import FeaturedProjects from "@/components/home/featured-projects";
 import Hero from "@/components/home/hero";
 import LatestBlogPosts from "@/components/home/latest-blog-posts";
@@ -15,6 +16,7 @@ import { getAboutData } from "@/lib/server/about";
 import { getFooter, initializeDefaultFooter } from "@/lib/server/footer";
 import { getHeader, initializeDefaultHeader } from "@/lib/server/header";
 import { serializeData } from "@/lib/utils";
+import { Suspense } from "react";
 
 export default async function Home() {
   await initializeDefaultHeader();
@@ -37,7 +39,9 @@ export default async function Home() {
       <Hero header={serializedHeader} />
       <AboutSection about={serializedAbout} />
       <SkillsPage />
-      <Experience />
+      <Suspense fallback={<ExperienceSkeleton />}>
+        <ExperienceSection />
+      </Suspense>
       <Certifications />
       <FeaturedProjects />
       <Services />
