@@ -1,15 +1,17 @@
-import { Button } from "@/components/ui/button";
+import BlogComments from "@/components/blog/blog-comments";
+import GlowBackground from "@/components/GlowBackground";
+import LightBackground from "@/components/home/LightBackground";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
-import Image from "next/image";
-import { notFound } from "next/navigation";
-import { connectToDB } from "@/lib/mongodb";
+import { Button } from "@/components/ui/button";
 import { Blog } from "@/lib/models/blog";
-import { Suspense } from "react";
-import BlogComments from "@/components/blog/blog-comments";
+import { connectToDB } from "@/lib/mongodb";
+import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Metadata } from "next";
-
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 // Sample blog post data for fallback during build
 const fallbackBlogPosts = {
@@ -163,7 +165,6 @@ export default async function BlogPostPage({
 
     // Only fetch from DB if we're not in build phase
     if (db) {
-     
       // Fetch blog post by ID with populated author and comments
       const blogPost = await Blog.findById(id)
         .populate("author", "name image")
@@ -215,12 +216,10 @@ export default async function BlogPostPage({
   }
 
   return (
-    <div className="min-h-screen">
-      <div
-        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat opacity-50 "
-        style={{ backgroundImage: 'url("/bg.webp")' }}
-      ></div>
-     
+    <div className="min-h-screen relative overflow-hidden text-gray-800 dark:text-foreground transition-colors duration-300">
+      <GlowBackground />
+      <LightBackground />
+
       <main className="pt-24 pb-16 px-4 md:px-8">
         <div className="max-w-4xl mx-auto">
           <Button variant="ghost" size="sm" asChild className="mb-8">
@@ -311,7 +310,6 @@ export default async function BlogPostPage({
           </Suspense>
         </div>
       </main>
-      
     </div>
   );
 }

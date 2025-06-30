@@ -1,11 +1,12 @@
+import GlowBackground from "@/components/GlowBackground";
+import LightBackground from "@/components/home/LightBackground";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarDays, Clock, ArrowRight } from "lucide-react";
+import { Blog } from "@/lib/models/blog";
+import { connectToDB } from "@/lib/mongodb";
+import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { connectToDB } from "@/lib/mongodb";
-import { Blog } from "@/lib/models/blog";
-
 
 // Sample blog post data for fallback during build
 const fallbackBlogPosts = [
@@ -44,7 +45,6 @@ const fallbackBlogPosts = [
 export default async function BlogPage() {
   // Try to fetch blog posts, but use fallback data during build
   let blogPosts = fallbackBlogPosts;
-  
 
   try {
     // Connect to database
@@ -52,8 +52,6 @@ export default async function BlogPage() {
 
     // Only fetch from DB if we're not in build phase
     if (db) {
-     
-
       // Fetch published blog posts
       const posts = await Blog.find({ published: true })
         .sort({ createdAt: -1 })
@@ -69,12 +67,10 @@ export default async function BlogPage() {
   }
 
   return (
-    <div className=" min-h-screen">
-      <div
-        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat opacity-50 "
-        style={{ backgroundImage: 'url("/bg.webp")' }}
-      ></div>
-     
+    <div className="min-h-screen relative overflow-hidden text-gray-800 dark:text-foreground transition-colors duration-300">
+      <GlowBackground />
+      <LightBackground />
+
       <main className="pt-24 pb-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="text-center space-y-4 mb-16">
@@ -153,7 +149,6 @@ export default async function BlogPage() {
           )}
         </div>
       </main>
-     
     </div>
   );
 }
