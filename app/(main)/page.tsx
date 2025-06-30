@@ -1,8 +1,8 @@
 import GlowBackground from "@/components/GlowBackground";
 import AboutSection from "@/components/home/about/AboutSection";
 import Certifications from "@/components/home/certifications/Certifications";
-
 import Contact from "@/components/home/contact";
+
 import ExperienceSection from "@/components/home/experience/experience-section";
 import ExperienceSkeleton from "@/components/home/experience/experience-skeleton";
 import FeaturedProjects from "@/components/home/featured-projects";
