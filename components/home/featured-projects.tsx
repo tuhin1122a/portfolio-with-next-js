@@ -1,15 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import type { IProject } from "@/lib/models/project";
+import { motion } from "framer-motion";
+import { ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Github, ExternalLink } from "lucide-react";
-import SectionHeading from "../ui/section-heading";
 import { useEffect, useState } from "react";
-import type { IProject } from "@/lib/models/project";
+import SectionHeading from "../ui/section-heading";
 
 type SerializedProject = Omit<IProject, "_id"> & {
   _id: string;
@@ -125,8 +125,7 @@ export default function FeaturedProjects() {
                         {project.tags.map((tag) => (
                           <Badge
                             key={tag}
-                            variant="secondary"
-                            className="rounded-full"
+                            className="rounded-full bg-muted text-muted-foreground border border-border hover:bg-primary/10 hover:text-foreground transition-colors"
                           >
                             {tag}
                           </Badge>

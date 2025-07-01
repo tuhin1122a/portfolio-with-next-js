@@ -154,7 +154,7 @@ export default function Hero({ header }: HeroProps) {
               {hero.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 hover:bg-black hover:scale-105 transition-all duration-300"
+                  className="px-3 py-1 rounded-full bg-muted text-muted-foreground border border-border hover:bg-primary/10 hover:text-foreground hover:scale-105 transition-all duration-300"
                 >
                   {tag}
                 </span>
