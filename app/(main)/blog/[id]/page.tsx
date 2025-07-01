@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Blog } from "@/lib/models/blog";
+import { User } from "@/lib/models/user";
 import { connectToDB } from "@/lib/mongodb";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Metadata } from "next";
@@ -12,10 +13,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-// eslint-disable-next-line no-unused-vars
-// eslint-disable-next-line no-unused-vars
-import { User } from "@/lib/models/user";
-
 
 // Sample blog post data for fallback during build
 const fallbackBlogPosts = {
@@ -162,6 +159,7 @@ export default async function BlogPostPage({
   const { id } = await params;
   let post;
   let settings = {};
+  console.log(User.modelName);
 
   try {
     // Connect to database
