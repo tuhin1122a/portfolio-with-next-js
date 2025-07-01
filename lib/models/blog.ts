@@ -1,23 +1,22 @@
-import mongoose, { Schema, models } from "mongoose"
-import {User} from "@/lib/models/user"
+import mongoose, { Schema, models } from "mongoose";
 
 export interface IBlog extends mongoose.Document {
-  title: string
-  excerpt: string
-  content: string
-  image: string
-  category: string
-  tags: string[]
-  author: mongoose.Types.ObjectId
-  readTime: string
-  published: boolean
+  title: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  category: string;
+  tags: string[];
+  author: mongoose.Types.ObjectId;
+  readTime: string;
+  published: boolean;
   comments: {
-    author: mongoose.Types.ObjectId
-    content: string
-    date: Date
-  }[]
-  createdAt: Date
-  updatedAt: Date
+    author: mongoose.Types.ObjectId;
+    content: string;
+    date: Date;
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const blogSchema = new Schema<IBlog>(
@@ -77,8 +76,7 @@ const blogSchema = new Schema<IBlog>(
       },
     ],
   },
-  { timestamps: true },
-)
+  { timestamps: true }
+);
 
-export const Blog = models.Blog || mongoose.model<IBlog>("Blog", blogSchema)
-
+export const Blog = models.Blog || mongoose.model<IBlog>("Blog", blogSchema);

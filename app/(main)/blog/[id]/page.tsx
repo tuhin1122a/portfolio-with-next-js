@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-
+import { User } from "@/lib/models/user";
 // Sample blog post data for fallback during build
 const fallbackBlogPosts = {
   Next: {
