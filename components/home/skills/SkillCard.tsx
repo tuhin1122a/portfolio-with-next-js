@@ -6,19 +6,19 @@ export default function SkillCard({ category }: { category: ISkill }) {
   const Icon = iconComponents[category.icon] || iconComponents["Frontend"];
 
   return (
-    <Card className="h-full overflow-hidden border-border/50 group hover:border-primary/50 transition-all duration-300 bg-card/50 backdrop-blur-sm">
+    <Card className="h-full overflow-hidden group rounded-xl border border-border bg-background shadow-sm hover:shadow-md hover:border-primary/60 transition-all duration-300">
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <Icon className="h-6 w-6" />
+        <CardTitle className="flex items-center gap-2 text-lg font-semibold text-foreground">
+          <Icon className="h-6 w-6 text-primary" />
           {category.title}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-1">
           {category.skills.map((skill) => (
             <span
               key={skill}
-              className="text-xs px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary-foreground group-hover:bg-primary/20 transition-colors duration-300"
+              className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground border border-border hover:bg-primary/10 hover:text-foreground transition-colors duration-300"
             >
               {skill}
             </span>
