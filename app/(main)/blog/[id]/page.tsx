@@ -12,6 +12,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars
+import { User } from "@/lib/models/user";
+
 
 // Sample blog post data for fallback during build
 const fallbackBlogPosts = {
