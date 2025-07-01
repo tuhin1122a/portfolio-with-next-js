@@ -5,8 +5,6 @@ import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  console.log("👉 Pathname:", pathname);
-  console.log("👉 Cookies:", request.cookies.getAll());
 
   try {
     // Try secure cookie first (for production), fallback to non-secure (for dev)
@@ -21,8 +19,6 @@ export async function middleware(request: NextRequest) {
         secret: process.env.NEXTAUTH_SECRET,
         cookieName: "next-auth.session-token",
       }));
-
-    console.log("🪪 Token in middleware:", token);
 
     // Protect routes
     if (

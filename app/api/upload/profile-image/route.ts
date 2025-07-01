@@ -1,39 +1,53 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth-options"
-import { uploadImage } from "@/lib/cloudinary"
+import { uploadImage } from "@/lib/cloudinary";
+import { User } from "@/lib/models/user";
+import { connectToDB } from "@/lib/mongodb";
+import { getToken } from "next-auth/jwt";
+import { revalidatePath } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
+  console.log("🍪 Cookies:", [...req.cookies]);
+  console.log("📨 Headers:", [...req.headers]);
+
   try {
-    // Check authentication
-    const session = await getServerSession(authOptions)
-    if (!session || !session.user.isAdmin) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+    // ✅ FIX: Pass req directly instead of reconstructing it
+    const token = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+    console.log(token);
+    if (!token?.sub) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const formData = await request.formData()
-    const file = formData.get("file") as File
+    const formData = await req.formData();
+    const file = formData.get("image") as Blob | null;
 
     if (!file) {
-      return NextResponse.json({ message: "No file provided" }, { status: 400 })
+      return NextResponse.json(
+        { message: "No image provided" },
+        { status: 400 }
+      );
     }
 
-    // Convert file to buffer
-    const buffer = Buffer.from(await file.arrayBuffer())
+    await connectToDB();
 
-    // Upload to Cloudinary
-    const imageUrl = await uploadImage(buffer, "profile")
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const imageUrl = await uploadImage(buffer, "profile");
 
     if (!imageUrl) {
-      return NextResponse.json({ message: "Failed to upload image" }, { status: 500 })
+      return NextResponse.json(
+        { message: "Image upload failed" },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ url: imageUrl })
-  } catch (error) {
-    console.error("Error uploading profile image:", error)
-    return NextResponse.json(
-      { message: error instanceof Error ? error.message : "Internal server error" },
-      { status: 500 },
-    )
+    await User.findByIdAndUpdate(token.sub, { $set: { image: imageUrl } });
+    revalidatePath("/profile");
+
+    return NextResponse.json({ success: true, imageUrl });
+  } catch (err) {
+    console.error("Image Upload Error:", err);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
