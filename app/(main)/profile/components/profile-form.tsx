@@ -9,6 +9,7 @@ import { updateUserProfile } from "@/lib/actions/user";
 import type { IUser } from "@/lib/models/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Camera, Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
 import type React from "react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -49,6 +50,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       formData.append("bio", data.bio || "");
       formData.append("location", data.location || "");
       await updateUserProfile(formData);
+      await signIn("credentials", { redirect: false });
       toast.success("Your profile has been updated successfully.");
     } catch (error) {
       toast.error(

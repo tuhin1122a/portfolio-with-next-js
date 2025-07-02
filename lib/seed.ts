@@ -1,40 +1,38 @@
-import { connectToDB } from "./mongodb"
-import { User } from "./models/user"
-import { Project } from "./models/project"
-import { Blog } from "./models/blog"
-import { Settings } from "./models/settings"
-import bcrypt from "bcryptjs"
-import mongoose from "mongoose"
+import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
+import { Blog } from "./models/blog";
+import { Project } from "./models/project";
+import { Settings } from "./models/settings";
+import { User } from "./models/user";
+import { connectToDB } from "./mongodb";
 
 async function seedDatabase() {
   try {
-    console.log("Connecting to database...")
-    await connectToDB()
-    console.log("Connected to database")
+    await connectToDB();
 
     // Check if data already exists
-    const userCount = await User.countDocuments()
-    const projectCount = await Project.countDocuments()
-    const blogCount = await Blog.countDocuments()
-    const settingsCount = await Settings.countDocuments()
+    const userCount = await User.countDocuments();
+    const projectCount = await Project.countDocuments();
+    const blogCount = await Blog.countDocuments();
+    const settingsCount = await Settings.countDocuments();
 
-    if (userCount > 0 || projectCount > 0 || blogCount > 0 || settingsCount > 0) {
-      console.log("Database already has data. Skipping seed.")
-      return
+    if (
+      userCount > 0 ||
+      projectCount > 0 ||
+      blogCount > 0 ||
+      settingsCount > 0
+    ) {
+      return;
     }
 
-    console.log("Seeding database...")
-
     // Create admin user
-    const hashedPassword = await bcrypt.hash("admin123", 10)
+    const hashedPassword = await bcrypt.hash("admin123", 10);
     const adminUser = await User.create({
       name: "Admin User",
       email: "admin@example.com",
       password: hashedPassword,
       isAdmin: true,
-    })
-
-    console.log("Admin user created")
+    });
 
     // Create settings
     await Settings.create({
@@ -55,9 +53,7 @@ async function seedDatabase() {
         enableAnimations: true,
         enableParticles: true,
       },
-    })
-
-    console.log("Settings created")
+    });
 
     // Create projects
     const projects = [
@@ -137,16 +133,16 @@ async function seedDatabase() {
         ],
         featured: true,
       },
-    ]
+    ];
 
-    await Project.insertMany(projects)
-    console.log("Projects created")
+    await Project.insertMany(projects);
 
     // Create blog posts
     const blogs = [
       {
         title: "Building Modern Web Applications Using Next 14",
-        excerpt: "Explore the latest features and best practices for building modern web applications with Next.js 14.",
+        excerpt:
+          "Explore the latest features and best practices for building modern web applications with Next.js 14.",
         content: `
           <p>Next.js has rapidly become the go-to framework for building modern web applications, and with the release of Next.js 14, it brings even more powerful features to the table. In this post, we'll explore the latest advancements and best practices for creating cutting-edge web experiences.</p>
           
@@ -179,7 +175,8 @@ async function seedDatabase() {
       },
       {
         title: "The Power of Tailwind CSS",
-        excerpt: "Discover why Tailwind CSS has become so popular and the best practices for modern web development.",
+        excerpt:
+          "Discover why Tailwind CSS has become so popular and the best practices for modern web development.",
         content: `
           <p>Tailwind CSS has revolutionized the way we approach styling in web development. With its utility-first methodology, it offers unprecedented flexibility and efficiency in creating beautiful, responsive designs.</p>
           
@@ -209,7 +206,13 @@ async function seedDatabase() {
         `,
         image: "/placeholder.svg?height=600&width=1200",
         category: "CSS",
-        tags: ["CSS", "Tailwind CSS", "Web Development", "Frontend", "UI Design"],
+        tags: [
+          "CSS",
+          "Tailwind CSS",
+          "Web Development",
+          "Frontend",
+          "UI Design",
+        ],
         author: adminUser._id,
         readTime: "4 min read",
         published: true,
@@ -217,7 +220,8 @@ async function seedDatabase() {
       },
       {
         title: "Mastering Framer Motion Animations",
-        excerpt: "Learn how to create stunning animations in React applications using Framer Motion.",
+        excerpt:
+          "Learn how to create stunning animations in React applications using Framer Motion.",
         content: `
           <p>Animations can significantly enhance the user experience of your web applications. Framer Motion is a powerful library that makes it easy to add beautiful animations to your React projects. In this post, we'll explore how to master Framer Motion to create stunning, interactive user interfaces.</p>
           
@@ -263,21 +267,16 @@ async function seedDatabase() {
         published: true,
         comments: [],
       },
-    ]
+    ];
 
-    await Blog.insertMany(blogs)
-    console.log("Blog posts created")
-
-    console.log("Database seeded successfully")
+    await Blog.insertMany(blogs);
   } catch (error) {
-    console.error("Error seeding database:", error)
+    console.error("Error seeding database:", error);
   } finally {
     // Close the connection
-    await mongoose.disconnect()
-    console.log("Disconnected from database")
+    await mongoose.disconnect();
   }
 }
 
 // Run the seed function
-seedDatabase()
-
+seedDatabase();

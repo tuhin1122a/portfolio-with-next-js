@@ -12,9 +12,31 @@ import {
 import { LogIn, LogOut, UserCircle } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export function SignInButton() {
   const { data: session } = useSession();
+  // একটা state রাখা হচ্ছে imageUrl-এর জন্য
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  // session থেকে ইমেজ পাওয়া গেলে টাইমস্ট্যাম্প যুক্ত করে আপডেট করব
+
+  useEffect(() => {
+    if (session) {
+      fetch("/api/users/profile")
+        .then(async (res) => {
+          const data = await res.json();
+          setImageUrl(data.image || "");
+          // যদি ইমেজ URL থাকে, তাহলে সেটি আপডেট করব
+          if (data.image) {
+            setImageUrl(data.image + `?t=${Date.now()}`); // টাইমস্ট্যাম্প যুক্ত করে ইমেজ আপডেট
+          } else {
+            setImageUrl(""); // ইমেজ না থাকলে ফাঁকা রাখব
+          }
+        })
+        .catch((err) => console.error("❌ Profile fetch error:", err));
+    }
+  }, [session]);
 
   if (session) {
     return (
@@ -23,7 +45,7 @@ export function SignInButton() {
           <Button variant="ghost" size="icon" className="rounded-full">
             <Avatar className="h-8 w-8">
               <AvatarImage
-                src={session.user?.image || ""}
+                src={imageUrl || ""}
                 alt={session.user?.name || ""}
               />
               <AvatarFallback>

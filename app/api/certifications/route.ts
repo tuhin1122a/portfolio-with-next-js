@@ -28,7 +28,6 @@ export async function POST(request: NextRequest) {
     }
 
     const certificationData = await request.json();
-    console.log("Received data:", certificationData);
     const newCertification = await createCertification(certificationData);
 
     return NextResponse.json(newCertification, { status: 201 });

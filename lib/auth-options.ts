@@ -12,7 +12,6 @@ import clientPromise, { connectToDB } from "./mongodb";
 async function refreshAccessToken(token: JWT) {
   try {
     if (!token.refreshToken) {
-      console.log("No refresh token available");
       return { ...token, error: "NoRefreshTokenAvailable" };
     }
 

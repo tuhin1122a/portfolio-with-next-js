@@ -1,8 +1,8 @@
-import { connectToDB } from "@/lib/mongodb";
-import { Settings } from "@/lib/models/settings";
-import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth-options";
+import { Settings } from "@/lib/models/settings";
+import { connectToDB } from "@/lib/mongodb";
+import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
 
 // GET settings
 export async function GET(req: Request) {
@@ -20,7 +20,10 @@ export async function GET(req: Request) {
     return NextResponse.json(settings, { status: 200 });
   } catch (error) {
     console.error("Error fetching settings:", error);
-    return NextResponse.json({ message: "Error fetching settings" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Error fetching settings" },
+      { status: 500 }
+    );
   }
 }
 
@@ -37,7 +40,6 @@ export async function POST(req: Request) {
     await connectToDB();
 
     const settingsData = await req.json();
-    console.log("Received settings data:", settingsData);
 
     // Get the first settings document or create a default one if none exists
     let settings = await Settings.findOne();
@@ -55,7 +57,10 @@ export async function POST(req: Request) {
     return NextResponse.json(settings.toObject(), { status: 200 }); // Convert to plain object
   } catch (error) {
     console.error("Error updating settings:", error);
-    return NextResponse.json({ message: "Error updating settings" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Error updating settings" },
+      { status: 500 }
+    );
   }
 }
 
@@ -72,7 +77,6 @@ export async function PUT(req: Request) {
     await connectToDB();
 
     const settingsData = await req.json();
-    console.log("Received settings data (PUT):", settingsData);
 
     // Get the first settings document or create a default one if none exists
     let settings = await Settings.findOne();
@@ -90,6 +94,9 @@ export async function PUT(req: Request) {
     return NextResponse.json(settings.toObject(), { status: 200 }); // Convert to plain object
   } catch (error) {
     console.error("Error updating settings:", error);
-    return NextResponse.json({ message: "Error updating settings" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Error updating settings" },
+      { status: 500 }
+    );
   }
 }

@@ -243,9 +243,6 @@ export default function AdminHeader() {
     setLoading(true);
 
     try {
-      // Log the data being sent
-      // console.log("Sending header data:", JSON.stringify(header));
-
       const response = await fetch("/api/header", {
         method: "POST",
         headers: {
@@ -255,7 +252,6 @@ export default function AdminHeader() {
       });
 
       const responseData = await response.json();
-      // console.log("API response:", response.status, responseData);
 
       if (!response.ok) {
         throw new Error(responseData.message || "Failed to update header");

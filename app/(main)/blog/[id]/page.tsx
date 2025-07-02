@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Blog } from "@/lib/models/blog";
-import { User } from "@/lib/models/user";
 import { connectToDB } from "@/lib/mongodb";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Metadata } from "next";
@@ -159,7 +158,6 @@ export default async function BlogPostPage({
   const { id } = await params;
   let post;
   let settings = {};
-  console.log(User.modelName);
 
   try {
     // Connect to database

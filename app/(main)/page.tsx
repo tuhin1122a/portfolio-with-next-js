@@ -26,7 +26,6 @@ export default async function Home() {
     getAboutData(),
     getFooter(),
   ]);
-  console.log("home");
   // Serialize the data to plain objects
   const serializedHeader = serializeData(header);
   const serializedAbout = serializeData(about);

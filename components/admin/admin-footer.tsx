@@ -1,13 +1,6 @@
 "use client";
 
-import type React from "react";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
@@ -15,9 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PlusCircle, Trash2, Save, Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import type { IFooter, IFooterLink, IFooterSection } from "@/lib/models/footer";
+import { Plus, PlusCircle, Save, Trash2 } from "lucide-react";
+import type React from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import type { IFooter, IFooterSection, IFooterLink } from "@/lib/models/footer";
 
 export default function AdminFooter() {
   const [loading, setLoading] = useState(false);
@@ -63,9 +63,6 @@ export default function AdminFooter() {
         const response = await fetch("/api/footer");
         if (response.ok) {
           const data = await response.json();
-
-        //   console.log("Footer fetched:", data); 
-
           // Ensure socialLinks is an object, not undefined or null
           const socialLinks = data.socialLinks || {};
 
@@ -78,7 +75,7 @@ export default function AdminFooter() {
                     github: "https://github.com/masudparvez2050",
                     linkedin: "https://www.linkedin.com/in/masudur-rahman-dev",
                     twitter: "https://twitter.com/masudurrahman",
-                    website: "https://masudur-rahman.vercel.app/"
+                    website: "https://masudur-rahman.vercel.app/",
                   },
           });
         } else {
@@ -131,9 +128,6 @@ export default function AdminFooter() {
         };
       }
 
-      // Log the data being sent
-    //   console.log("Sending footer data:", JSON.stringify(dataToSend));
-
       const response = await fetch("/api/footer", {
         method: "POST",
         headers: {
@@ -143,7 +137,6 @@ export default function AdminFooter() {
       });
 
       const responseData = await response.json();
-    //   console.log("API response:", response.status, responseData);
 
       if (!response.ok) {
         throw new Error(responseData.message || "Failed to update footer");

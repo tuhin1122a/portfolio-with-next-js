@@ -19,6 +19,7 @@ export async function middleware(request: NextRequest) {
         secret: process.env.NEXTAUTH_SECRET,
         cookieName: "next-auth.session-token",
       }));
+    console.log("Token:", token);
 
     // Protect routes
     if (

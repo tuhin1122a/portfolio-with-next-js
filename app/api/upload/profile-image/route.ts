@@ -6,16 +6,12 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  console.log("🍪 Cookies:", [...req.cookies]);
-  console.log("📨 Headers:", [...req.headers]);
-
   try {
     // ✅ FIX: Pass req directly instead of reconstructing it
     const token = await getToken({
       req,
       secret: process.env.NEXTAUTH_SECRET,
     });
-    console.log(token);
     if (!token?.sub) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
