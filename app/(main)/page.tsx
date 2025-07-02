@@ -29,7 +29,7 @@ export default async function Home() {
   // Serialize the data to plain objects
   const serializedHeader = serializeData(header);
   const serializedAbout = serializeData(about);
-  console.log("home");
+  console.log("homee");
 
   return (
     <main className="min-h-screen relative overflow-hidden text-gray-800 dark:text-foreground transition-colors duration-300">
