@@ -15,6 +15,7 @@ interface Message {
   message: string;
   date: string;
   read: boolean;
+  createdAt?: string;
 }
 
 interface Props {
@@ -30,11 +31,14 @@ export default function MessageRow({ message, onDelete, onMarkAsRead }: Props) {
       <TableCell>{message.email}</TableCell>
       <TableCell className="max-w-xs truncate">{message.subject}</TableCell>
       <TableCell>
-        {new Date(message.date).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}
+        {new Date(message?.createdAt || message.date).toLocaleDateString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          }
+        )}
       </TableCell>
       <TableCell>
         <Badge variant={message.read ? "outline" : "default"}>
@@ -52,11 +56,14 @@ export default function MessageRow({ message, onDelete, onMarkAsRead }: Props) {
             <MessageDialog message={message} onMarkAsRead={onMarkAsRead} />
           </Dialog>
 
-          <Button variant="ghost" size="icon" asChild>
-            <a href={`mailto:${message.email}?subject=Re: ${message.subject}`}>
-              <Mail className="h-4 w-4" />
-            </a>
-          </Button>
+          <a
+            href={`mailto:${message.email}?subject=Re: ${message.subject}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
+          >
+            <Mail className="h-4 w-4" />
+          </a>
 
           <Button
             variant="ghost"

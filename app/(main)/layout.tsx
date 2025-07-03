@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: "Tuhin Portfolio",
     images: [
       {
-        url: "https://tuhin-portfilio.vercel.app/og-image.jpg",
+        url: "https://tuhin-portfilio.vercel.app",
         width: 1200,
         height: 630,
         alt: "Tuhin Portfolio Open Graph Image",
