@@ -6,6 +6,7 @@ export default function Preloader() {
   const [progress, setProgress] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [startTime] = useState(() => Date.now());
 
   useEffect(() => {
     if (progress < 100) {
@@ -16,15 +17,22 @@ export default function Preloader() {
       }, 50);
       return () => clearTimeout(timer);
     } else {
-      const timeout = setTimeout(() => {
-        setIsAnimating(true);
-        setTimeout(() => {
-          setIsHidden(true);
-        }, 1000);
-      }, 400);
+      const elapsed = Date.now() - startTime;
+      const minDisplayTime = 1500; // milliseconds, 1.5 seconds minimum
+
+      const timeout = setTimeout(
+        () => {
+          setIsAnimating(true);
+          setTimeout(() => {
+            setIsHidden(true);
+          }, 1000);
+        },
+        elapsed < minDisplayTime ? minDisplayTime - elapsed : 300
+      );
+
       return () => clearTimeout(timeout);
     }
-  }, [progress]);
+  }, [progress, startTime]);
 
   if (isHidden) return null;
 
