@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Blog } from "@/lib/models/blog";
+import { User } from "@/lib/models/user";
 import { connectToDB } from "@/lib/mongodb";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { Metadata } from "next";
@@ -123,6 +124,7 @@ export async function generateMetadata({
       description: "The requested blog post could not be found.",
     };
   }
+  console.log(User.findById(post.author._id));
 
   return {
     title: post.title,
