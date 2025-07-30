@@ -2,7 +2,6 @@ import GlowBackground from "@/components/GlowBackground";
 import AboutSection from "@/components/home/about/AboutSection";
 import Certifications from "@/components/home/certifications/Certifications";
 import Contact from "@/components/home/contact";
-
 import ExperienceSection from "@/components/home/experience/experience-section";
 import ExperienceSkeleton from "@/components/home/experience/experience-skeleton";
 import FeaturedProjects from "@/components/home/featured-projects";
@@ -18,35 +17,58 @@ import { getHeader, initializeDefaultHeader } from "@/lib/server/header";
 import { serializeData } from "@/lib/utils";
 import { Suspense } from "react";
 
+// 🆕 Added animated wrapper
+import FadeIn from "@/components/FadeIn";
+
 export default async function Home() {
   await initializeDefaultHeader();
   await initializeDefaultFooter();
+
   const [header, about] = await Promise.all([
     getHeader(),
     getAboutData(),
     getFooter(),
   ]);
-  // Serialize the data to plain objects
+
   const serializedHeader = serializeData(header);
   const serializedAbout = serializeData(about);
-  console.log("homee");
 
   return (
-    <main className="min-h-screen relative overflow-hidden text-gray-800 dark:text-foreground transition-colors duration-300">
+    <main className="min-h-screen relative overflow-hidden scroll-smooth text-gray-800 dark:text-foreground transition-colors duration-300">
+      {/* Smooth scroll enabled via Tailwind scroll-smooth class */}
+
       <GlowBackground />
       <LightBackground />
 
-      <Hero header={serializedHeader} />
-      <AboutSection about={serializedAbout} />
-      <SkillsPage />
-      <Suspense fallback={<ExperienceSkeleton />}>
-        <ExperienceSection />
-      </Suspense>
-      <Certifications />
-      <FeaturedProjects />
-      <Services />
-      <LatestBlogPosts />
-      <Contact />
+      <FadeIn>
+        <Hero header={serializedHeader} />
+      </FadeIn>
+      <FadeIn delay={0.1}>
+        <AboutSection about={serializedAbout} />
+      </FadeIn>
+      <FadeIn delay={0.2}>
+        <SkillsPage />
+      </FadeIn>
+      <FadeIn delay={0.3}>
+        <Suspense fallback={<ExperienceSkeleton />}>
+          <ExperienceSection />
+        </Suspense>
+      </FadeIn>
+      <FadeIn delay={0.4}>
+        <Certifications />
+      </FadeIn>
+      <FadeIn delay={0.5}>
+        <FeaturedProjects />
+      </FadeIn>
+      <FadeIn delay={0.6}>
+        <Services />
+      </FadeIn>
+      <FadeIn delay={0.7}>
+        <LatestBlogPosts />
+      </FadeIn>
+      <FadeIn delay={0.8}>
+        <Contact />
+      </FadeIn>
     </main>
   );
 }

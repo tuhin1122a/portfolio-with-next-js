@@ -55,7 +55,7 @@
     "deepmerge-ts": "^7.1.5",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "8.5.1",
-    "framer-motion": "latest",
+    "framer-motion": "^12.23.12",
     "gcp-metadata": "latest",
     "input-otp": "1.4.1",
     "kerberos": "latest",
